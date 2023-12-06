@@ -1,7 +1,7 @@
 {
-  "name": "fe-utils",
+  "name": "fe-utils-es",
   "type": "module",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "packageManager": "pnpm@8.11.0",
   "description": "JavaScript 函数库、工具类",
   "author": "aliothor",
