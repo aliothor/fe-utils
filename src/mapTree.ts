@@ -1,0 +1,27 @@
+import helperCreateTreeFunc from './helperCreateTreeFunc'
+import map from './map'
+
+function mapTreeItem(parent, obj, iterate, context, path, node, parseChildren, opts) {
+  let paths, nodes, rest
+  const mapChildren = opts.mapChildren || parseChildren
+  return map(obj, (item, index) => {
+    paths = path.concat([`${index}`])
+    nodes = node.concat([item])
+    rest = iterate.call(context, item, index, obj, paths, parent, nodes)
+    if (rest && item && parseChildren && item[parseChildren])
+      rest[mapChildren] = mapTreeItem(item, item[parseChildren], iterate, context, paths, nodes, parseChildren, opts)
+
+    return rest
+  })
+}
+/**
+ * 从树结构中指定方法后的返回值组成的新数组
+ *
+ * @param {object} obj 对象/数组
+ * @param {Function} iterate(item, index, items, path, parent, nodes) 回调
+ * @param {object} options {children: 'children'}
+ * @param {object} context 上下文
+ * @return {Object/Array}
+ */
+const mapTree = helperCreateTreeFunc(mapTreeItem)
+export default mapTree

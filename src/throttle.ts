@@ -1,0 +1,53 @@
+/**
+ * 节流函数；当被调用 n 毫秒后才会执行，如果在这时间内又被调用则至少每隔 n 秒毫秒调用一次该函数
+ *
+ * @param {Function} callback 回调
+ * @param {number} wait 多少秒毫
+ * @param {object} options 参数{leading: 是否在之前执行, trailing: 是否在之后执行}
+ * @return {Function}
+ */
+function throttle(callback, wait, options) {
+  let args, context
+  const opts = options || {}
+  let runFlag = false
+  const isDestroy = false
+  let timeout: any = 0
+  const optLeading = 'leading' in opts ? opts.leading : true
+  const optTrailing = 'trailing' in opts ? opts.trailing : false
+  const runFn = function () {
+    if (!isDestroy) {
+      runFlag = true
+      callback.apply(context, args)
+      timeout = setTimeout(endFn, wait)
+    }
+  }
+  var endFn = function () {
+    timeout = 0
+    if (!isDestroy && !runFlag && optTrailing === true)
+      runFn()
+  }
+  const cancelFn = function () {
+    const rest = timeout !== 0
+    clearTimeout(timeout)
+    args = null
+    context = null
+    runFlag = false
+    timeout = 0
+    return rest
+  }
+  const throttled = function () {
+    args = arguments
+    context = this
+    runFlag = false
+    if (timeout === 0) {
+      if (optLeading === true)
+        runFn()
+
+      else if (optTrailing === true)
+        timeout = setTimeout(endFn, wait)
+    }
+  }
+  throttled.cancel = cancelFn
+  return throttled
+}
+export default throttle

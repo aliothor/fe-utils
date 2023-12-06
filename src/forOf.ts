@@ -1,0 +1,26 @@
+import isArray from './isArray'
+import hasOwnProp from './hasOwnProp'
+
+/**
+ * 已废弃，被 some, every 替换
+ * @deprecated
+ */
+function forOf(obj, iterate, context?) {
+  if (obj) {
+    if (isArray(obj)) {
+      for (let index = 0, len = obj.length; index < len; index++) {
+        if (iterate.call(context, obj[index], index, obj) === false)
+          break
+      }
+    }
+    else {
+      for (const key in obj) {
+        if (hasOwnProp(obj, key)) {
+          if (iterate.call(context, obj[key], key, obj) === false)
+            break
+        }
+      }
+    }
+  }
+}
+export default forOf
