@@ -67,6 +67,9 @@
     "pre-commit": "pnpm lint-staged"
   },
   "lint-staged": {
-    "*": "eslint --fix"
+    "*": "eslint -h"
+  },
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org/"
   }
 }
